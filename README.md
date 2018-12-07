@@ -32,4 +32,5 @@ Connect other nodes to the first one:
     PORT=4003 ID=4003 FIRST_NODE=127.0.0.1:4001 iex -S mix
     PORT=4004 ID=4004 FIRST_NODE=127.0.0.1:4001 iex -S mix
 
-The scripts node1.sh, node2.sh, node3.sh, and node4.sh (in the root folder) run nodes with port from 4001 to 4004, with id respectively from 4001 to 4004. **Run each of them in different console sessions.**
+The scripts node1.sh, node2.sh, node3.sh, and node4.sh (in the root folder) run nodes with port from 4001 to 4004, with id respectively from 4001 to 4004.
+**Run each of them in different console sessions**: you can see that, as per requirements, the leader is the node with bigger ID in the connected node set.

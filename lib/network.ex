@@ -46,7 +46,7 @@ defmodule LeaderElection.Network do
          :ok <- :gen_tcp.close(socket) do
       :ok
     else
-      {:error, err} -> Logger.info("#{inspect(addr)}:#{port} seems down (#{inspect(err)})")
+      {:error, err} -> Logger.debug("#{inspect(addr)}:#{port} seems down (#{inspect(err)})")
     end
   end
 end

@@ -87,12 +87,12 @@ defmodule LeaderElection.Listener do
   end
 
   defp incoming_message({"PING", id}, parent_pid, _from) do
-    Logger.info("Ping from #{id}")
+    Logger.debug("Ping from #{id}")
     LeaderElection.Node.send_pong(parent_pid, id)
   end
 
   defp incoming_message("PONG", parent_pid, _from) do
-    Logger.info("Pong arrived")
+    Logger.debug("Pong arrived")
     LeaderElection.Node.pong_received(parent_pid)
   end
 end

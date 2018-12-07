@@ -141,6 +141,11 @@ defmodule LeaderElection.Node do
     {:noreply, %{state | leader: leader_id}}
   end
 
+  def handle_cast(:wait_for_iamtheking, state) do
+    Process.send_after(self(), :wait_for_iamtheking_timeout, @t_time)
+    {:noreply, %{state | status: :waiting_for_iamtheking}}
+  end
+
   def handle_info(
         :wait_for_iamtheking_timeout,
         %{id: id, nodes: nodes, status: :waiting_for_iamtheking} = state
@@ -161,11 +166,6 @@ defmodule LeaderElection.Node do
   def handle_info(:i_am_the_king, %{status: :waiting_for_finethanks} = state) do
     i_am_the_king(state.nodes, state.id, state.pinger_id)
     {:noreply, %{state | leader: state.id, status: :idle}}
-  end
-
-  def handle_info(:wait_for_iamtheking, state) do
-    Process.send_after(self(), :wait_for_iamtheking_timeout, @t_time)
-    {:noreply, %{state | status: :waiting_for_iamtheking}}
   end
 
   def handle_info(_, state), do: {:noreply, state}
