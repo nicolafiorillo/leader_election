@@ -1,6 +1,8 @@
 # LeaderElection
 
-The Leader Election Kata
+The Leader Election kata.
+
+**THIS IS FOR EDUCATIONAL PURPOSES. DO NOT USE IN PRODUCTION!**
 
 ## Compilation
 
@@ -18,11 +20,11 @@ Run tests:
 
 ## Usage
 
-To just verify the system behaviour, you can run some nodes, even in the same machine (use different listening port) with the following command:
+To verify the system behaviour you can run some nodes, even in the same machine (using different listening ports), with the following command:
 
     PORT=4001 ID=4001 iex -S mix
 
-It creates a node with ID=4001 which listens to port 4001.
+It creates a node with id 4001 which listens to port 4001.
 To create other nodes connecting to the previous one you have to indicate the active node to connect to:
 
     PORT=4002 ID=4002 FIRST_NODE=127.0.0.1:4001 iex -S mix

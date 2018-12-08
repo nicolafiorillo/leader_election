@@ -3,7 +3,7 @@ defmodule LeaderElectionTest do
 
   test "one node alone become leader" do
     {:ok, node_pid} = LeaderElection.Node.start_link(%{id: 4001, port: 4001, first_node: nil})
-    wait(600)
+    wait_a_second()
 
     state = process_state(node_pid)
     assert state.id == state.leader
@@ -21,10 +21,12 @@ defmodule LeaderElectionTest do
   test "two node and verify leader" do
     {:ok, node1_pid} = LeaderElection.Node.start_link(%{id: 4003, port: 4003, first_node: nil})
 
+    wait_a_second()
+
     {:ok, node2_pid} =
       LeaderElection.Node.start_link(%{id: 4004, port: 4004, first_node: "localhost:4003"})
 
-    wait(600)
+    wait_a_second()
 
     node1_state = process_state(node1_pid)
     node2_state = process_state(node2_pid)
@@ -35,5 +37,6 @@ defmodule LeaderElectionTest do
 
   defp process_state(pid), do: :sys.get_state(pid)
 
+  defp wait_a_second(), do: wait(1000)
   defp wait(millisec), do: Process.sleep(millisec)
 end

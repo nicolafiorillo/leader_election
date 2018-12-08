@@ -47,15 +47,13 @@ defmodule LeaderElection.LeaderPinger do
   end
 
   def handle_info(:batch, %{status: :idle, node_pid: node_pid, node_id: node_id} = state) do
-    Logger.debug("Ping leader: pinging")
-
     state =
       case LeaderElection.Node.get_leader(node_pid) do
         nil ->
           %{state | status: :idle, wait_retry: 0}
 
         leader ->
-          Logger.debug("Pinging leader #{inspect(leader)}")
+          Logger.info("Ping leader #{leader.id}")
           LeaderElection.Network.cast(leader.address, {"PING", node_id})
           %{state | status: :wait_for_leader, wait_retry: 0}
       end

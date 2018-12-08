@@ -75,6 +75,7 @@ defmodule LeaderElection.Listener do
 
   defp incoming_message({"IAMTHEKING", id}, parent_pid, _from) do
     LeaderElection.Node.set_leader(parent_pid, id)
+    LeaderElection.Node.stop_election(parent_pid)
   end
 
   defp incoming_message({"ALIVE?", id}, parent_pid, _from) do

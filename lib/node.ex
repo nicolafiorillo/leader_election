@@ -55,6 +55,9 @@ defmodule LeaderElection.Node do
   @spec start_election(pid()) :: any()
   def start_election(pid), do: GenServer.cast(pid, :start_election)
 
+  @spec stop_election(pid()) :: any()
+  def stop_election(pid), do: GenServer.cast(pid, :stop_election)
+
   @spec check_if_possible_leader(pid()) :: any()
   def check_if_possible_leader(pid), do: GenServer.cast(pid, :possible_leader)
 
@@ -129,6 +132,9 @@ defmodule LeaderElection.Node do
     {:noreply, state}
   end
 
+  def handle_cast(:stop_election, state), do: {:noreply, %{state | status: :idle}}
+
+  def handle_cast(:start_election, %{status: :waiting_for_finethanks} = state), do: {:noreply, state}
   def handle_cast(:start_election, %{id: id, nodes: nodes} = state) do
     status = _start_election(id, nodes)
     {:noreply, %{state | status: status, leader: nil}}
@@ -142,7 +148,8 @@ defmodule LeaderElection.Node do
   end
 
   def handle_cast(:wait_for_iamtheking, state) do
-    Process.send_after(self(), :wait_for_iamtheking_timeout, @t_time)
+    time = length(state.nodes) * @t_time
+    Process.send_after(self(), :wait_for_iamtheking_timeout, time)
     {:noreply, %{state | status: :waiting_for_iamtheking}}
   end
 
@@ -179,6 +186,7 @@ defmodule LeaderElection.Node do
   end
 
   defp _start_election(id, nodes) do
+    Logger.info("Starting election...")
     nodes_greater_than_me =
       nodes |> Enum.filter(fn %LeaderElection.NodeCoords{id: node_id} -> node_id > id end)
 
