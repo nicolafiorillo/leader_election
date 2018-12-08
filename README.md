@@ -4,6 +4,8 @@ The Leader Election kata.
 
 **THIS IS FOR EDUCATIONAL PURPOSES. DO NOT USE IN PRODUCTION!**
 
+<iframe width="560" height="315" src="https://youtu.be/bl1hxMaOtkw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ## Compilation
 
 Clone the repo:
